@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LibraryData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using LibraryServices;
 
 namespace LibraryManagementSystem
 {
@@ -24,6 +27,11 @@ namespace LibraryManagementSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddMvc();
+            services.AddSingleton(Configuration);
+            services.AddScoped<ILibraryAsset, LibraryAssetService>();
+            services.AddDbContext<LibraryContext>(options
+                => options.UseSqlServer(Configuration.GetConnectionString("LibaryConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
