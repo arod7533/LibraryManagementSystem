@@ -4,7 +4,7 @@
 <div id="assets">
     <h3>Library Catalog</h3>
     <div id="assetsTable">
-        <table class="table table-condensed" id="catalogIndexTable">
+        <table class="table table-condensed" id="catalogIndexTable" cellspacing="0" cellpadding="20">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -13,7 +13,7 @@
                     <th>Dewey Call Number</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody> 
                 @foreach (var asset in Model.Assets)
                 {
                     <tr class="assetRow">
