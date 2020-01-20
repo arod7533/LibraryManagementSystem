@@ -22,7 +22,7 @@ namespace LibraryManagementSystem.Models.Catalog
         public string PatronName { get; set; }
         public Checkout LatestCheckout { get; set; }
         public IEnumerable<CheckoutHistory> CheckoutHistory { get; set; }
-        public IAsyncEnumerable<AssetHoldModel> CurrentHolds { get; set; }
+        public IEnumerable<AssetHoldModel> CurrentHolds { get; set; }
     }
 
     public class AssetHoldModel
