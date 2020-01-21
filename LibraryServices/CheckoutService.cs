@@ -23,7 +23,7 @@ namespace LibraryServices
             _context.SaveChanges();
         }
 
-        public void CheckInItem(int assetId, int libraryCardId)
+        public void CheckInItem(int assetId)
         {
             var now = DateTime.Now;
 
@@ -45,6 +45,7 @@ namespace LibraryServices
             if (currentHolds.Any())
             {
                 CheckoutToEarliestHold(assetId, currentHolds);
+                return;
             }
             // otherwise, update item status to available
             UpdateAssetStatus(assetId, "Available");
@@ -108,12 +109,11 @@ namespace LibraryServices
             return now.AddDays(30);
         }
 
-        private bool IsCheckedOut(int assetId)
+        public bool IsCheckedOut(int assetId)
         {
             return _context.Checkouts
                 .Where(co => co.LibraryAsset.Id == assetId)
                 .Any();
-            
         }
 
         public IEnumerable<Checkout> Getall()
@@ -168,7 +168,7 @@ namespace LibraryServices
             _context.SaveChanges();
         }
 
-        private void UpdateAssetStatus(int assetId, string v)
+        private void UpdateAssetStatus(int assetId, string newStatus)
         {
             var item = _context.LibraryAssets
                 .FirstOrDefault(a => a.Id == assetId);
@@ -176,7 +176,7 @@ namespace LibraryServices
             _context.Update(item);
 
             item.Status = _context.Statuses
-                .FirstOrDefault(status => status.Name == v);
+                .FirstOrDefault(status => status.Name == newStatus);
         }
 
         private void CloseExistingCheckoutHistory(int assetId, DateTime now)
@@ -191,6 +191,7 @@ namespace LibraryServices
                 _context.Update(history);
                 history.CheckedIn = now;
             }
+
         }
 
         private void RemoveExistingCheckouts(int assetId)
@@ -215,6 +216,7 @@ namespace LibraryServices
             var now = DateTime.Now;
 
             var asset = _context.LibraryAssets
+                .Include(a => a.Status)
                 .FirstOrDefault(a => a.Id == assetId);
 
             var card = _context.LibraryCards
