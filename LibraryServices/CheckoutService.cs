@@ -184,7 +184,7 @@ namespace LibraryServices
             // close any existing checkout history
             var history = _context.CheckoutHistories
                 .FirstOrDefault(h => h.LibraryAsset.Id == assetId
-                && h.CheckedOut == null);
+                && h.CheckedIn == null);
 
             if (history != null)
             {
