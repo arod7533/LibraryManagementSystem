@@ -17,6 +17,6 @@ namespace LibraryData.Models
         public int OpenTime { get; set; }
 
         [Range(0, 23)]
-        public int Closetime { get; set; }
+        public int CloseTime { get; set; }
     }
 }
